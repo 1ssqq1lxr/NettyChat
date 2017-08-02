@@ -4,8 +4,10 @@ import com.wolfbe.chat.entity.UserInfo;
 import com.wolfbe.chat.proto.ChatProto;
 import com.wolfbe.chat.util.BlankUtil;
 import com.wolfbe.chat.util.NettyUtil;
+
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +27,8 @@ public class UserInfoManager {
     private static final Logger logger = LoggerFactory.getLogger(UserInfoManager.class);
 
     private static ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock(true);
+    private static final String   LEFT_MES="广播员";
+    private static final String   LEFT_MES_X="系统消息";
 
     private static ConcurrentMap<Channel, UserInfo> userInfos = new ConcurrentHashMap<>();
     private static AtomicInteger userCount = new AtomicInteger(0);
@@ -184,4 +188,14 @@ public class UserInfoManager {
             userInfo.setTime(System.currentTimeMillis());
         }
     }
+
+	public static void broadcastLeftMess(Channel channel) {
+		// TODO Auto-generated method stub
+		UserInfo userInfo = userInfos.get(channel);
+		Set<Channel> keySet = userInfos.keySet();
+        for (Channel ch : keySet) {
+            if (userInfo == null ||!ch.isActive() || !userInfo.isAuth()|| channel==ch) continue;
+            ch.writeAndFlush(new TextWebSocketFrame(ChatProto.buildMessProto(LEFT_MES, LEFT_MES_X, userInfo.getNick()+"离开了房间")));
+        }
+	}
 }

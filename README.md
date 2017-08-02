@@ -1,4 +1,4 @@
-# HappyChat
+# NettyChat
 基于Netty实现的WebSocket聊天室，实现的功能如下：
 <br>
 1. 支持昵称登录；<br>

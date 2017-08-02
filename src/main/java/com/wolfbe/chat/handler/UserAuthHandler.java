@@ -85,6 +85,7 @@ public class UserAuthHandler extends SimpleChannelInboundHandler<Object> {
         // 判断是否关闭链路命令
         if (frame instanceof CloseWebSocketFrame) {
             handshaker.close(ctx.channel(), (CloseWebSocketFrame) frame.retain());
+            UserInfoManager.broadcastLeftMess(ctx.channel());
             UserInfoManager.removeChannel(ctx.channel());
             return;
         }

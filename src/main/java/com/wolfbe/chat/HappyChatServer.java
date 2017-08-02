@@ -1,11 +1,5 @@
 package com.wolfbe.chat;
 
-import com.wolfbe.chat.handler.MessageHandler;
-import com.wolfbe.chat.handler.UserAuthHandler;
-import com.wolfbe.chat.handler.UserInfoManager;
-import com.wolfbe.chat.core.BaseServer;
-
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.socket.SocketChannel;
@@ -14,12 +8,16 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-import io.netty.util.concurrent.EventExecutor;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import com.wolfbe.chat.core.BaseServer;
+import com.wolfbe.chat.handler.MessageHandler;
+import com.wolfbe.chat.handler.UserAuthHandler;
+import com.wolfbe.chat.handler.UserInfoManager;
 
 /**
  * @author lxr
@@ -56,7 +54,7 @@ public class HappyChatServer extends BaseServer {
      
                         );
                     }
-                });
+                }) .childOption(ChannelOption.SO_KEEPALIVE, true);;
 
         try {
             cf = b.bind().sync();
@@ -71,7 +69,6 @@ public class HappyChatServer extends BaseServer {
                     UserInfoManager.scanNotActiveChannel();
                 }
             }, 3, 60, TimeUnit.SECONDS);
-
             // 定时向所有客户端发送Ping消息
             executorService.scheduleAtFixedRate(new Runnable() {
                 @Override

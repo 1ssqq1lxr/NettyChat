@@ -69,6 +69,13 @@ public class ChatProto {
         chatProto.extend.put("time", DateTimeUtil.getCurrentTime());
         return JSONObject.toJSONString(chatProto);
     }
+    public static String buildMessProto(String uid,String nick, String mess) {
+        ChatProto chatProto = new ChatProto(MESS_PROTO, mess);
+        chatProto.extend.put("uid", uid);
+        chatProto.extend.put("nick", nick);
+        chatProto.extend.put("time", DateTimeUtil.getCurrentTime());
+        return JSONObject.toJSONString(chatProto);
+    }
 
     public static String buildProto(int head, String body) {
         ChatProto chatProto = new ChatProto(head, body);
