@@ -14,6 +14,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.16</version>
+        </dependency>
+        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.23</version>
@@ -37,8 +42,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.5.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -47,7 +52,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.wolfbe.chat.HappyChatMain</mainClass>
+                            <mainClass>com.lxr.chat.HappyChatMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -66,7 +71,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.wolfbe.chat.HappyChatMain</mainClass>
+                            <mainClass>com.lxr.chat.HappyChatMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
