@@ -6,5 +6,5 @@ package com.lxr.chat.channel;
  * @author lxr
  * @create 2018-02-02 15:20
  **/
-public class ChannelManager {
+public interface ChannelManager {
 }
