@@ -1,13 +1,13 @@
 package com.lxr.chat.remote.tcp;
 
+import com.lxr.chat.channel.ChannelManager;
 import com.lxr.chat.config.ChatConfig;
+import com.lxr.chat.filter.DefaultPipeline;
+import com.lxr.chat.handler.ChatHandler;
 import com.lxr.chat.remote.Server;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.DefaultEventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -31,7 +31,12 @@ public class NettyServer  extends AbstractInitHandler implements Server {
     private ServerBootstrap b;
 
     @Override
-    public boolean start(ChatConfig cf) {
+    public boolean start(ChatConfig cf,
+                         ChatHandler inboundHandlerAdapter,
+                         ChannelInboundHandlerAdapter byteToMessageDecoder,
+                         ChannelOutboundHandlerAdapter messageToByteEncoder,
+                         DefaultPipeline defaultPipeline,
+                         ChannelManager channelManager) {
         init();
         b.group(bossGroup, workGroup)
                 .channel(NioServerSocketChannel.class)
@@ -43,7 +48,7 @@ public class NettyServer  extends AbstractInitHandler implements Server {
                 .option(ChannelOption.SO_RCVBUF, cf.getRevbuf())
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        initHandler(ch.pipeline(),cf);
+                        initHandler(ch.pipeline(),cf,inboundHandlerAdapter,byteToMessageDecoder,messageToByteEncoder,defaultPipeline,channelManager);
                     }
                 })
                 .childOption(ChannelOption.TCP_NODELAY, cf.isTcpNodelay())

@@ -1,23 +1,22 @@
-package com.lxr.chat.handler;
+package com.lxr.chat.handler;/**
+ * Created by wangcy on 2018/2/2.
+ */
 
+import com.lxr.chat.channel.ChannelManager;
+import com.lxr.chat.filter.Pipeline;
 import com.lxr.chat.protocol.ChatCode;
-import io.netty.channel.ChannelHandlerContext;
+import com.sun.istack.internal.NotNull;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
  * 处理器
  *
  * @author lxr
- * @create 2018-01-26 17:55
+ * @create 2018-02-02 14:32
  **/
-public class ChatHandler extends SimpleChannelInboundHandler<ChatCode> {
+public abstract class ChatHandler  extends SimpleChannelInboundHandler<ChatCode> {
 
+    public abstract  ChatHandler pipeline(@NotNull Pipeline pipeline);
 
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, ChatCode msg) throws Exception {
-
-    }
-
-
-
+    public abstract  ChatHandler channelManager(@NotNull ChannelManager channelManager);
 }
